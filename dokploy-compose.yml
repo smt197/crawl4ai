@@ -4,28 +4,29 @@ services:
     image: "${IMAGE:-unclecode/crawl4ai}:${TAG:-0.8.6}"
     pull_policy: always
     restart: unless-stopped
-    shm_size: '${SHM_SIZE:-1gb}'
+    shm_size: "${SHM_SIZE:-1gb}"
     ports:
       - "${PORT:-11235}:11235"
     networks:
+      - mcp-network
       - app-network
     environment:
-      PYTHON_ENV: '${PYTHON_ENV:-production}'
-      REDIS_HOST: '${REDIS_HOST:-localhost}'
-      REDIS_PORT: '${REDIS_PORT:-6379}'
-      REDIS_TASK_TTL: '${REDIS_TASK_TTL:-3600}'
-      CRAWL4AI_HOOKS_ENABLED: '${CRAWL4AI_HOOKS_ENABLED:-false}'
-      LLM_PROVIDER: '${LLM_PROVIDER:-}'
-      LLM_API_KEY: '${LLM_API_KEY:-}'
-      LLM_TEMPERATURE: '${LLM_TEMPERATURE:-}'
-      LLM_BASE_URL: '${LLM_BASE_URL:-}'
-      OPENAI_API_KEY: '${OPENAI_API_KEY:-}'
-      DEEPSEEK_API_KEY: '${DEEPSEEK_API_KEY:-}'
-      ANTHROPIC_API_KEY: '${ANTHROPIC_API_KEY:-}'
-      GROQ_API_KEY: '${GROQ_API_KEY:-}'
-      TOGETHER_API_KEY: '${TOGETHER_API_KEY:-}'
-      MISTRAL_API_KEY: '${MISTRAL_API_KEY:-}'
-      GEMINI_API_TOKEN: '${GEMINI_API_TOKEN:-}'
+      PYTHON_ENV: "${PYTHON_ENV:-production}"
+      REDIS_HOST: "${REDIS_HOST:-localhost}"
+      REDIS_PORT: "${REDIS_PORT:-6379}"
+      REDIS_TASK_TTL: "${REDIS_TASK_TTL:-3600}"
+      CRAWL4AI_HOOKS_ENABLED: "${CRAWL4AI_HOOKS_ENABLED:-false}"
+      LLM_PROVIDER: "${LLM_PROVIDER:-}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_TEMPERATURE: "${LLM_TEMPERATURE:-}"
+      LLM_BASE_URL: "${LLM_BASE_URL:-}"
+      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
+      DEEPSEEK_API_KEY: "${DEEPSEEK_API_KEY:-}"
+      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      GROQ_API_KEY: "${GROQ_API_KEY:-}"
+      TOGETHER_API_KEY: "${TOGETHER_API_KEY:-}"
+      MISTRAL_API_KEY: "${MISTRAL_API_KEY:-}"
+      GEMINI_API_TOKEN: "${GEMINI_API_TOKEN:-}"
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://localhost:11235/health || exit 1"]
       interval: 30s
@@ -34,5 +35,7 @@ services:
       start_period: 60s
 
 networks:
+  mcp-network:
+    external: true
   app-network:
     driver: bridge
